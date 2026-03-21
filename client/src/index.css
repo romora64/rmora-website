@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ─── Modo claro: Modernismo Académico ─── */
+  :root {
+    /* Paleta institucional */
+    --background: 39 33% 95%;        /* Warm Ivory #F7F4EF */
+    --foreground: 0 0% 11%;          /* Soft Black #1C1C1C */
+
+    --card: 39 33% 95%;
+    --card-foreground: 0 0% 11%;
+
+    --popover: 39 33% 95%;
+    --popover-foreground: 0 0% 11%;
+
+    --primary: 206 83% 20%;          /* R. Mora Blue #0A3A5E */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 209 17% 45%;        /* Soft Grey Blue #5F7386 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 203 42% 75%;            /* Light Professional Blue #A3C4D9 */
+    --muted-foreground: 209 14% 35%;
+
+    --accent: 38 47% 60%;            /* Ocre Suave #C9A66B */
+    --accent-foreground: 0 0% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 209 17% 80%;
+    --input: 209 17% 80%;
+    --ring: 206 83% 20%;
+
+    --radius: 0rem;
+  }
+
+  /* ─── Modo oscuro ─── */
+  .dark {
+    --background: 210 19% 16%;       /* Deep Dark Blue #1A2A3A */
+    --foreground: 0 0% 94%;          /* Ivory Text #F0F0F0 */
+
+    --card: 210 27% 23%;             /* Azul Oscuro #2A3A4A */
+    --card-foreground: 0 0% 94%;
+
+    --popover: 210 27% 23%;
+    --popover-foreground: 0 0% 94%;
+
+    --primary: 214 44% 51%;          /* Azul Claro #4A7AB8 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 209 17% 40%;
+    --secondary-foreground: 0 0% 94%;
+
+    --muted: 210 19% 25%;
+    --muted-foreground: 209 17% 65%;
+
+    --accent: 38 47% 55%;
+    --accent-foreground: 0 0% 11%;
+
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 19% 28%;
+    --input: 210 19% 28%;
+    --ring: 214 44% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* ─── Componentes académicos reutilizables ─── */
+@layer components {
+  .academic-card {
+    @apply bg-card text-card-foreground border border-border p-6
+           shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .academic-line {
+    @apply border-t border-border my-8;
+  }
+
+  .section-container {
+    @apply container mx-auto px-4 py-16;
+  }
+}

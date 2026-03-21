@@ -1,0 +1,14 @@
+client/dist/
+client/node_modules/
+Imagenes/
+Info_Tecnica/
+node_modules/
+Publicaciones-website/
+Recursos-website/
+Requerimientos/
+/server/dist/
+/server/node_modules
+Textos/
+.env
+.env.*
+
