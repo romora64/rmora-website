@@ -1,10 +1,10 @@
 -- ============================================================
--- rmora_website — Schema de producción
--- Ejecutar: mysql -u rmora_user -p rmora_website < schema.sql
+-- rmora-website — Schema + seed de producción
+-- Ejecutar: mysql -u romora -p website < scripts/schema.sql
 -- ============================================================
 
 SET NAMES utf8mb4;
-SET time_zone = '+00:00';
+SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_signed_in` timestamp NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `open_id` (`open_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `admins` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `last_login_at` timestamp NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `meetings` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `meetings` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `contact_messages` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `contact_messages` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `availability_blocks` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `availability_blocks` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `publications` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -85,13 +85,13 @@ CREATE TABLE IF NOT EXISTS `publications` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `licenses` (
   `code` varchar(50) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `resources` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `resources` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_resources_license` FOREIGN KEY (`license`) REFERENCES `licenses` (`code`) ON UPDATE CASCADE ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `testimonials` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -120,4 +120,32 @@ CREATE TABLE IF NOT EXISTS `testimonials` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ─── Datos iniciales ──────────────────────────────────────────────────────────
+
+-- Admin
+INSERT IGNORE INTO `admins` (`email`, `name`, `is_active`) VALUES
+('romora.291164@gmail.com', 'Ronald Mora', 1);
+
+-- Licencias
+INSERT IGNORE INTO `licenses` (`code`, `description`) VALUES
+('MIT', 'Permite usar, copiar, modificar y vender software sin apenas restricciones, siempre que se incluya el aviso de copyright original en todas las copias.'),
+('Apache 2.0', 'Permite usar, modificar y distribuir software comercialmente sin obligar a liberar el código fuente. Requiere mantener los avisos de derechos de autor, incluye protección de patentes y no requiere cambios de licencia en trabajos derivados.'),
+('CC BY', '(Atribución) - Permite cualquier uso (comercial y adaptaciones) siempre que se reconozca al autor.'),
+('CC BY-SA', '(Atribución-CompartirIgual) - Permite modificaciones y uso comercial, pero las nuevas obras deben tener la misma licencia.'),
+('CC BY-ND', '(Atribución-SinDerivadas) - Permite compartir comercialmente sin modificar la obra, citando al autor.'),
+('CC BY-NC', '(Atribución-NoComercial) - Permite modificar y adaptar la obra, pero no para fines comerciales.'),
+('CC BY-NC-SA', '(Atribución-NoComercial-CompartirIgual) - Permite adaptar y compartir la obra sin fines comerciales, bajo la misma licencia.'),
+('CC BY-NC-ND', '(Atribución-NoComercial-SinDerivadas) - Solo permite descargar y compartir el trabajo, sin cambios ni uso comercial.'),
+('CC0', '(Dominio Público) - El autor libera todos sus derechos, permitiendo uso libre sin restricciones.');
+
+-- Publicaciones
+INSERT IGNORE INTO `publications` (`type`, `title`, `published_at`, `storage_link`) VALUES
+('Artículo', 'Educar para el Desempleo o para la Revolución: La disyuntiva de la educación universitaria', '2025-11-01', 'https://drive.google.com/file/d/19HCm1Oo79Lqym1iyt3j4sQc41RUtrLeg/view?usp=drive_link'),
+('Blog', 'Cómo hablar con la IA - El arte del Prompt', '2025-07-01', 'https://drive.google.com/file/d/1RP44W8YOKZZIgBKylkdOcnbokQwmb_r5/view?usp=drive_link'),
+('Artículo', 'Actualización y marco de referencia de los nuevos paradigmas en Ingeniería de Sistemas', '2019-03-01', 'https://drive.google.com/file/d/1WWovcm0-gzHQnotiKxscE327Dsokmqhc/view?usp=drive_link'),
+('Artículo', 'Uso de los servicios en la nube como herramienta de enseñanza-aprendizaje', '2018-03-01', 'https://drive.google.com/file/d/1hRN0zxrsk-vqqg_19ItUNeBJwM7regSc/view?usp=drive_link'),
+('Artículo', 'Redes inalámbricas de datos - nuestra realidad', '2007-09-01', 'https://drive.google.com/file/d/1iPOdLiI4QV1IHaz82iDfBETji15-joeI/view?usp=drive_link');
